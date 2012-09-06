@@ -28,17 +28,17 @@
  * @filesource
  */
 
+/**
+ * Hooks
+ */
+$GLOBALS['TL_HOOKS']['addCustomRegexp'][] = array('CustomRegexp', 'addCustomRegexp');
 
 /**
- * Table tl_user
+ * Backend form fields
  */
-$GLOBALS['TL_DCA']['tl_user']['fields']['password'] = array(
-    'label'     => &$GLOBALS['TL_LANG']['MSC']['password'],
-    'exclude'   => true,
-    'inputType' => 'extendedPassword',
-    'eval'      => array(
-        'mandatory' => true,
-        'rgxp'      => 'passwordComplexity', 
-        'minlength' => 10
-    )
-);
+$GLOBALS['BE_FFL']['extendedPassword'] = 'ExtendedPassword';
+
+/**
+ * Frontend form fields
+ */
+$GLOBALS['TL_FFL']['extendedPassword'] = 'ExtendedPassword';

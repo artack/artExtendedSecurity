@@ -28,17 +28,13 @@
  * @filesource
  */
 
+/**
+ * Legend
+ */
+$GLOBALS['TL_LANG']['tl_settings']['extended_security_legend'] = 'ARTACK Extended Security';
 
 /**
- * Table tl_user
+ * Fields
  */
-$GLOBALS['TL_DCA']['tl_user']['fields']['password'] = array(
-    'label'     => &$GLOBALS['TL_LANG']['MSC']['password'],
-    'exclude'   => true,
-    'inputType' => 'extendedPassword',
-    'eval'      => array(
-        'mandatory' => true,
-        'rgxp'      => 'passwordComplexity', 
-        'minlength' => 10
-    )
-);
+$GLOBALS['TL_LANG']['tl_settings']['extended_security_minimum_password_length'] = array('Passwort mindestlänge', 'Definieren Sie hier die mindestanzahl an Zeichen, die das Passwort aufweisen muss.');
+$GLOBALS['TL_LANG']['tl_settings']['extended_security_maximum_password_age']    = array('Passwort maximalalter', 'Definieren Sie hier das maximal zuläsige Alter eines Passwortes.');

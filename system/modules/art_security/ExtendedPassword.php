@@ -30,15 +30,24 @@
 
 
 /**
- * Table tl_user
+ * Class ExtendedPassword
+ *
+ * Form field "password".
+ * @copyright  ARTACK WebLab GmbH 2012
+ * @author     Patrick Landolt <http://www.artack.ch>
+ * @package    art_security
  */
-$GLOBALS['TL_DCA']['tl_user']['fields']['password'] = array(
-    'label'     => &$GLOBALS['TL_LANG']['MSC']['password'],
-    'exclude'   => true,
-    'inputType' => 'extendedPassword',
-    'eval'      => array(
-        'mandatory' => true,
-        'rgxp'      => 'passwordComplexity', 
-        'minlength' => 10
-    )
-);
+class ExtendedPassword extends Password
+{
+
+    /**
+     * Validate input and set value
+     * @param mixed
+     * @return mixed
+     */
+//    protected function validator($varInput)
+//    {
+//        parent::validator($varInput);
+//    }
+
+}

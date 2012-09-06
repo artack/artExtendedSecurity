@@ -28,17 +28,33 @@
  * @filesource
  */
 
+class CustomRegexp {
+    
+    public function addCustomRegexp($strRegexp, $varValue, Widget $objWidget)
+    {
+        if ($strRegexp == 'passwordComplexity')
+        {
+            
+            $nonAlphaNum = '!#$%&()*+,-.:;>=<?@[]_{}';
+            $countCategories = 0;
+            
+            if (preg_match('/[a-z]+/', $varValue)) $countCategories++;
+            if (preg_match('/[A-Z]+/', $varValue)) $countCategories++;
+            if (preg_match('/[0-9]+/', $varValue)) $countCategories++;
+            if (preg_match('/['.  preg_quote($nonAlphaNum).']+/', $varValue)) $countCategories++;
+            
+            if ($countCategories < 3)
+            {
+                $objWidget->addErrorMessage("test");
+//                $objWidget->addError($GLOBALS['TL_LANG']['tl_user']['regexp']['passwordComplexity']['minThreeOfFourCategories']);
+//                var_dump($objWidget);
+                echo "du error";
+            }
+            
+            return true;
+        }
 
-/**
- * Table tl_user
- */
-$GLOBALS['TL_DCA']['tl_user']['fields']['password'] = array(
-    'label'     => &$GLOBALS['TL_LANG']['MSC']['password'],
-    'exclude'   => true,
-    'inputType' => 'extendedPassword',
-    'eval'      => array(
-        'mandatory' => true,
-        'rgxp'      => 'passwordComplexity', 
-        'minlength' => 10
-    )
-);
+        return false;
+    }
+    
+}

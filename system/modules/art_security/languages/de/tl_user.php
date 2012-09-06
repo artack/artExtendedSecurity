@@ -28,17 +28,7 @@
  * @filesource
  */
 
-
 /**
- * Table tl_user
+ * Regexp
  */
-$GLOBALS['TL_DCA']['tl_user']['fields']['password'] = array(
-    'label'     => &$GLOBALS['TL_LANG']['MSC']['password'],
-    'exclude'   => true,
-    'inputType' => 'extendedPassword',
-    'eval'      => array(
-        'mandatory' => true,
-        'rgxp'      => 'passwordComplexity', 
-        'minlength' => 10
-    )
-);
+$GLOBALS['TL_LANG']['tl_user']['regexp']['passwordComplexity']['minThreeOfFourCategories'] = 'Das Passwort muss aus drei der folgenden vier Kategorien zusammengesetzt sein: A-Z (Gross), a-z (Klein), 0-9, Sonderzeichen (z.B. !, $, #, %, ...)';
