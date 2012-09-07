@@ -36,5 +36,7 @@ $GLOBALS['TL_LANG']['tl_settings']['extended_security_legend'] = 'ARTACK Extende
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_settings']['extended_security_minimum_password_length'] = array('Passwort mindestlänge', 'Definieren Sie hier die mindestanzahl an Zeichen, die das Passwort aufweisen muss.');
-$GLOBALS['TL_LANG']['tl_settings']['extended_security_maximum_password_age']    = array('Passwort maximalalter', 'Definieren Sie hier das maximal zuläsige Alter eines Passwortes.');
+$GLOBALS['TL_LANG']['tl_settings']['extended_security_minimum_password_length']     = array('Passwort mindestlänge', 'Definieren Sie hier die mindestanzahl an Zeichen, die das Passwort aufweisen muss.');
+$GLOBALS['TL_LANG']['tl_settings']['extended_security_maximum_password_age']        = array('Passwort maximalalter', 'Definieren Sie hier das maximal zuläsige Alter eines Passwortes.');
+$GLOBALS['TL_LANG']['tl_settings']['extended_security_password_not_contain_user']   = array('Keine Teile des Benutzernamens im Passwort', 'Definieren Sie hier ob das Passwort Teile des Benutzernamens enthalten darf.');
+$GLOBALS['TL_LANG']['tl_settings']['extended_security_higher_password_complexity']  = array('Erhöhte Passwortkomplexität', 'Definieren Sie hier ob das Passwort eine erhöhte Komplexität aufweisen muss.');

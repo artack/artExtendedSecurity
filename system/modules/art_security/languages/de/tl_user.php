@@ -31,4 +31,5 @@
 /**
  * Regexp
  */
-$GLOBALS['TL_LANG']['tl_user']['regexp']['passwordComplexity']['minThreeOfFourCategories'] = 'Das Passwort muss aus drei der folgenden vier Kategorien zusammengesetzt sein: A-Z (Gross), a-z (Klein), 0-9, Sonderzeichen (z.B. !, $, #, %, ...)';
+$GLOBALS['TL_LANG']['tl_user']['validator']['higherPasswordComplexity'] = 'Das Passwort muss aus 3 der folgenden 4 Kategorien zusammengesetzt sein: A-Z, a-z, 0-9, Sonderzeichen (z.B. !, $, #, %, ...)';
+$GLOBALS['TL_LANG']['tl_user']['validator']['usernamePartOfPassword']   = 'Das Passwort darf keine Teile des Benutzernamens enthalten';

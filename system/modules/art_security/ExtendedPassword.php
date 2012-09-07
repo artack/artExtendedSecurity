@@ -39,17 +39,12 @@
  */
 class ExtendedPassword extends Password
 {
-    
-    protected $topErrors = array();
 
     /**
-     * Save error messages to display on top
-     * @param string
+     * Template
+     * @var string
      */
-    public function addTopError($strError)
-    {
-        $this->topErrors[] = $strError;
-    }
+    protected $strTemplate = 'be_widget_epw';
     
     /**
      * Validate input and set value
@@ -58,12 +53,52 @@ class ExtendedPassword extends Password
      */
     protected function validator($varInput)
     {
-        parent::validator($varInput);
-       
-        foreach($this->topErrors as $strError)
+        // check for password complexity
+        if ($GLOBALS['TL_CONFIG']['extended_security_higher_password_complexity'])
         {
-            $this->addErrorMessage($strError);
-        }
-    }
+            $nonAlphaNum = '!#$%&()*+,-.:;>=<?@[]_{}';
+            $countCategories = 0;
 
+            if (preg_match('/[a-z]+/', $varInput)) $countCategories++;
+            if (preg_match('/[A-Z]+/', $varInput)) $countCategories++;
+            if (preg_match('/[0-9]+/', $varInput)) $countCategories++;
+            if (preg_match('/['. preg_quote($nonAlphaNum) .']+/', $varInput)) $countCategories++;
+
+            if ($countCategories < 3)
+            {
+                $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['higherPasswordComplexity']);
+            }
+        }
+        
+        // check for parts of username in password
+        if ($GLOBALS['TL_CONFIG']['extended_security_password_not_contain_user'])
+        {
+            $username = $this->getPost('username');
+            $usernameCount = utf8_strlen($username);
+            
+            $usernameParts = array();
+            for ($i=0; $i<=$usernameCount-3; $i++)
+            {
+                $usernameParts[] = utf8_substr($username, $i, 3);
+            }
+            
+            $usernamePartInPassword = false;
+            foreach ($usernameParts as $part)
+            {
+                if (false !== utf8_strpos($varInput, $part))
+                {
+                    $usernamePartInPassword = true;
+                }
+            }
+            
+            if ($usernamePartInPassword)
+            {
+                $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['usernamePartOfPassword']);
+            }
+        }
+        
+        $return = parent::validator($varInput);
+        return $return;
+    }
+    
 }

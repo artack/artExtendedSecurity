@@ -32,7 +32,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace('{files_legend', '{extended_security_legend:},extended_security_minimum_password_length,extended_security_maximum_password_age;{files_legend', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace('{files_legend', '{extended_security_legend:},extended_security_minimum_password_length,extended_security_maximum_password_age,extended_security_higher_password_complexity,extended_security_password_not_contain_user;{files_legend', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
 
 /**
  * Fields
@@ -44,8 +44,6 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['extended_security_minimum_password_
     'search'    => false,
     'default'	=> 10,
     'inputType'	=> 'text',
-    //	'options'	=> array('remote_stable', '2_12', '2_11', '2_10', '2_9', '2_8', '2_7'),
-    //	'reference'	=> $GLOBALS['TL_LANG']['tl_layout'],
     'eval'		=> array(
         'mandatory' => true,
         'tl_class'  => 'w50'
@@ -58,7 +56,32 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['extended_security_maximum_password_
     'exclude'	=> true,
     'search'    => false,
     'inputType'	=> 'text',
-//	'options'	=> array('remote_stable', '2_12', '2_11', '2_10', '2_9', '2_8', '2_7'),
-//	'reference'	=> $GLOBALS['TL_LANG']['tl_layout'],
-    'eval'		=> array('tl_class'=>'w50')
+    'default'	=> 90,
+    'eval'      => array(
+        'tl_class'  => 'w50'
+    )
+);
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['extended_security_password_not_contain_user'] = array
+(
+    'label'     => &$GLOBALS['TL_LANG']['tl_settings']['extended_security_password_not_contain_user'],
+    'exclude'	=> true,
+    'search'    => false,
+    'inputType'	=> 'checkbox',
+    'default'	=> true,
+    'eval'      => array(
+        'tl_class'  => 'w50'
+    )
+);
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['extended_security_higher_password_complexity'] = array
+(
+    'label'     => &$GLOBALS['TL_LANG']['tl_settings']['extended_security_higher_password_complexity'],
+    'exclude'	=> true,
+    'search'    => false,
+    'inputType'	=> 'checkbox',
+    'default'	=> true,
+    'eval'      => array(
+        'tl_class'  => 'w50'
+    )
 );

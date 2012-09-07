@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
@@ -28,46 +28,42 @@
  * @filesource
  */
 
-
 /**
- * Table tl_user
- */
-$GLOBALS['TL_DCA']['tl_user']['fields']['password'] = array(
-    'label'     => &$GLOBALS['TL_LANG']['MSC']['password'],
-    'exclude'   => true,
-    'inputType' => 'extendedPassword',
-    'eval'      => array(
-        'mandatory' => true,
-        'minlength' => as_tl_user::retrivePasswordMinimumLength()
-    )
-);
-
-/**
- * Class tl_user
+ * Class ExtendedSecurityCronDaily
  *
- * Provide miscellaneous methods that are used by the data configuration array.
+ * Cron class.
  * @copyright  ARTACK WebLab GmbH 2012
  * @author     Patrick Landolt <http://www.artack.ch>
  * @package    art_security
  */
-class as_tl_user extends Backend
+class ExtendedSecurityCronDaily extends Frontend
 {
 
-    /**
-     * Import the back end user object
-     */
-    public function __construct()
+    protected $maximumPasswordAge;
+
+
+    protected function __construct() {
+        parent::__construct();
+        $this->maximumPasswordAge = ($GLOBALS['TL_CONFIG']['extended_security_maximum_password_age']) ? $GLOBALS['TL_CONFIG']['extended_security_maximum_password_age'] : 90;
+    }
+
+    
+    public function checkForPasswordAge()
     {
-            parent::__construct();
-            $this->import('BackendUser', 'User');
+        $objUser = $this->Database->prepare("SELECT id, dateAdded, pwChangeTstamp FROM tl_user")->execute();
+        while ($objUser->next())
+        {
+            $lastPwChange = ($objUser->pwChangeTstamp) ? $objUser->pwChangeTstamp : $objUser->dateAdded;
+            
+            $lastChangeDate = new DateTime('@'.$lastPwChange);
+            $nowDate        = new DateTime("now", new DateTimeZone('UTC'));
+            
+            $dateDiff = $lastChangeDate->diff($nowDate);
+            if ($dateDiff->days >= $this->maximumPasswordAge)
+            {
+                $this->Database->prepare("UPDATE tl_user SET pwChange = ? WHERE id = ?")->execute(1, $objUser->id);
+            }
+        }
     }
     
-    /**
-     * Retrieve extended password minimum length.
-     */
-    public static function retrivePasswordMinimumLength()
-    {
-        return ($GLOBALS['TL_CONFIG']['extended_security_minimum_password_length'] > 0) ? $GLOBALS['TL_CONFIG']['extended_security_minimum_password_length'] : 10;
-    }
-        
 }

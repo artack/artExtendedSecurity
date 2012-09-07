@@ -29,9 +29,9 @@
  */
 
 /**
- * Hooks
+ * Cron jobs
  */
-$GLOBALS['TL_HOOKS']['addCustomRegexp'][] = array('CustomRegexp', 'addCustomRegexp');
+$GLOBALS['TL_CRON']['daily'][] = array('ExtendedSecurityCronDaily', 'checkForPasswordAge');
 
 /**
  * Backend form fields
