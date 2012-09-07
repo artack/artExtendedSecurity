@@ -39,15 +39,31 @@
  */
 class ExtendedPassword extends Password
 {
+    
+    protected $topErrors = array();
 
+    /**
+     * Save error messages to display on top
+     * @param string
+     */
+    public function addTopError($strError)
+    {
+        $this->topErrors[] = $strError;
+    }
+    
     /**
      * Validate input and set value
      * @param mixed
-     * @return mixed
+     * @return string
      */
-//    protected function validator($varInput)
-//    {
-//        parent::validator($varInput);
-//    }
+    protected function validator($varInput)
+    {
+        parent::validator($varInput);
+       
+        foreach($this->topErrors as $strError)
+        {
+            $this->addErrorMessage($strError);
+        }
+    }
 
 }

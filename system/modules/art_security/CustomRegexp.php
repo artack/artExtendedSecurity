@@ -41,14 +41,12 @@ class CustomRegexp {
             if (preg_match('/[a-z]+/', $varValue)) $countCategories++;
             if (preg_match('/[A-Z]+/', $varValue)) $countCategories++;
             if (preg_match('/[0-9]+/', $varValue)) $countCategories++;
-            if (preg_match('/['.  preg_quote($nonAlphaNum).']+/', $varValue)) $countCategories++;
+            if (preg_match('/['. preg_quote($nonAlphaNum) .']+/', $varValue)) $countCategories++;
             
             if ($countCategories < 3)
             {
-                $objWidget->addErrorMessage("test");
-//                $objWidget->addError($GLOBALS['TL_LANG']['tl_user']['regexp']['passwordComplexity']['minThreeOfFourCategories']);
-//                var_dump($objWidget);
-                echo "du error";
+                $objWidget->addError($GLOBALS['TL_LANG']['tl_user']['regexp']['passwordComplexity']['minThreeOfFourCategories']);
+                $objWidget->addTopError($GLOBALS['TL_LANG']['tl_user']['regexp']['passwordComplexity']['minThreeOfFourCategories']);
             }
             
             return true;

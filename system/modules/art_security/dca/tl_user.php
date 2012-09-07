@@ -39,6 +39,36 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['password'] = array(
     'eval'      => array(
         'mandatory' => true,
         'rgxp'      => 'passwordComplexity', 
-        'minlength' => 10
+        'minlength' => as_tl_user::retrivePasswordMinimumLength()
     )
 );
+
+/**
+ * Class tl_user
+ *
+ * Provide miscellaneous methods that are used by the data configuration array.
+ * @copyright  ARTACK WebLab GmbH 2012
+ * @author     Patrick Landolt <http://www.artack.ch>
+ * @package    art_security
+ */
+class as_tl_user extends Backend
+{
+
+    /**
+     * Import the back end user object
+     */
+    public function __construct()
+    {
+            parent::__construct();
+            $this->import('BackendUser', 'User');
+    }
+    
+    /**
+     * Retrieve extended password minimum length.
+     */
+    public static function retrivePasswordMinimumLength()
+    {
+        return ($GLOBALS['TL_CONFIG']['extended_security_minimum_password_length'] > 0) ? $GLOBALS['TL_CONFIG']['extended_security_minimum_password_length'] : 10;
+    }
+        
+}
