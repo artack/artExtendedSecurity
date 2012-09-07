@@ -29,21 +29,27 @@
  */
 
 /**
- * ES Callbacks
+ * Class Validator
+ *
+ * Validation service class
+ * @copyright  ARTACK WebLab GmbH 2012
+ * @author     Patrick Landolt <http://www.artack.ch>
+ * @package    art_security
  */
-$GLOBALS['TL_CRON']['es_callback']['validator']['password_complexity'] = array('Validator', 'validatePasswordComplexity');
+class Validator
+{
 
-/**
- * Cron jobs
- */
-$GLOBALS['TL_CRON']['daily'][] = array('ExtendedSecurityCronDaily', 'checkForPasswordAge');
+    public static function validatePasswordComplexity($varInput)
+    {
+        $nonAlphaNum = '!#$%&()*+,-.:;>=<?@[]_{}';
+        $countCategories = 0;
 
-/**
- * Backend form fields
- */
-$GLOBALS['BE_FFL']['extendedPassword'] = 'ExtendedPassword';
+        if (preg_match('/[a-z]+/', $varInput)) $countCategories++;
+        if (preg_match('/[A-Z]+/', $varInput)) $countCategories++;
+        if (preg_match('/[0-9]+/', $varInput)) $countCategories++;
+        if (preg_match('/['. preg_quote($nonAlphaNum) .']+/', $varInput)) $countCategories++;
 
-/**
- * Frontend form fields
- */
-$GLOBALS['TL_FFL']['extendedPassword'] = 'ExtendedPassword';
+        return ($countCategories >= 3) ? true : false;
+    }
+        
+}

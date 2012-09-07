@@ -56,17 +56,13 @@ class ExtendedPassword extends Password
         // check for password complexity
         if ($GLOBALS['TL_CONFIG']['extended_security_higher_password_complexity'])
         {
-            $nonAlphaNum = '!#$%&()*+,-.:;>=<?@[]_{}';
-            $countCategories = 0;
-
-            if (preg_match('/[a-z]+/', $varInput)) $countCategories++;
-            if (preg_match('/[A-Z]+/', $varInput)) $countCategories++;
-            if (preg_match('/[0-9]+/', $varInput)) $countCategories++;
-            if (preg_match('/['. preg_quote($nonAlphaNum) .']+/', $varInput)) $countCategories++;
-
-            if ($countCategories < 3)
+            if (is_callable($GLOBALS['TL_CRON']['es_callback']['validator']['password_complexity']))
             {
-                $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['higherPasswordComplexity']);
+                $cbRet = call_user_func($GLOBALS['TL_CRON']['es_callback']['validator']['password_complexity'], $varInput);
+                if (!$cbRet)
+                {
+                    $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['higherPasswordComplexity']);
+                }
             }
         }
         
