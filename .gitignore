@@ -1,12 +1,3 @@
-contao
-system
-templates
-tl_files
-plugins
-typolight
-
-/*.php
-/*.txt
-/*.md
-
-/nbproject/
+*
+!contao/art_security
+!system/modules/art_security
