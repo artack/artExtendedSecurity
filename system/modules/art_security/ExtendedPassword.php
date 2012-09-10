@@ -53,6 +53,12 @@ class ExtendedPassword extends Password
      */
     protected function validator($varInput)
     {
+        // do not check if nothing has changed
+        if (($varInput == '' || $varInput == '*****') && $this->varValue != '')
+        {
+                return '*****';
+        }
+
         // check for minimum password length
         if (as_tl_user::retrivePasswordMinimumLength() > 0)
         {
