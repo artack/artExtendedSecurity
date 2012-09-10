@@ -12,3 +12,7 @@ Das Modul bietet diverse Möglichkeiten die Benutzerpasswörter in Sachen Sicher
 - Mindestanzahl Zeichen kann definiert werden
 - Definition eines Maximalalters eines Passwortes
 - Definition wie lange die Passwort History behalten werden soll um wiederkehrende Passworte zu verhindern.
+
+Aktuelle Version
+----------------
+0.1.0 beta1
