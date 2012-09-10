@@ -29,11 +29,6 @@
  */
 
 /**
- * ES Callbacks
- */
-$GLOBALS['TL_CRON']['es_callback']['validator']['password_complexity'] = array('Validator', 'validatePasswordComplexity');
-
-/**
  * Cron jobs
  */
 $GLOBALS['TL_CRON']['daily'][] = array('ExtendedSecurityCronDaily', 'checkForPasswordAge');

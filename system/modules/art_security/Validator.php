@@ -51,5 +51,32 @@ class Validator
 
         return ($countCategories >= 3) ? true : false;
     }
+    
+    public static function validatePartOfUsernameInPassword($username, $varInput)
+    {
+        $usernameCount = utf8_strlen($username);
+            
+        $usernameParts = array();
+        for ($i=0; $i<=$usernameCount-3; $i++)
+        {
+            $usernameParts[] = utf8_substr($username, $i, 3);
+        }
+
+        $usernamePartInPassword = false;
+        foreach ($usernameParts as $part)
+        {
+            if (false !== utf8_strpos($varInput, $part))
+            {
+                $usernamePartInPassword = true;
+            }
+        }
+        
+        return !$usernamePartInPassword;
+    }
+    
+    public static function validateMinPasswordLength($varInput)
+    {
+        return (utf8_strlen($varInput) > $GLOBALS['TL_CONFIG']['extended_security_minimum_password_length']) ? true : false;
+    }
         
 }

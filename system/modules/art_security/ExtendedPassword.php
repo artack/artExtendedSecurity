@@ -53,16 +53,23 @@ class ExtendedPassword extends Password
      */
     protected function validator($varInput)
     {
+        // check for minimum password length
+        if (as_tl_user::retrivePasswordMinimumLength() > 0)
+        {
+            $vRet = Validator::validateMinPasswordLength($varInput);
+            if (!$vRet)
+            {
+                $this->addErrorMessage(sprintf($GLOBALS['TL_LANG']['ERR']['passwordLength'], as_tl_user::retrivePasswordMinimumLength()));
+            }
+        }
+        
         // check for password complexity
         if ($GLOBALS['TL_CONFIG']['extended_security_higher_password_complexity'])
         {
-            if (is_callable($GLOBALS['TL_CRON']['es_callback']['validator']['password_complexity']))
+            $vRet = Validator::validatePasswordComplexity($varInput);
+            if (!$vRet)
             {
-                $cbRet = call_user_func($GLOBALS['TL_CRON']['es_callback']['validator']['password_complexity'], $varInput);
-                if (!$cbRet)
-                {
-                    $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['higherPasswordComplexity']);
-                }
+                $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['higherPasswordComplexity']);
             }
         }
         
@@ -70,24 +77,9 @@ class ExtendedPassword extends Password
         if ($GLOBALS['TL_CONFIG']['extended_security_password_not_contain_user'])
         {
             $username = $this->getPost('username');
-            $usernameCount = utf8_strlen($username);
             
-            $usernameParts = array();
-            for ($i=0; $i<=$usernameCount-3; $i++)
-            {
-                $usernameParts[] = utf8_substr($username, $i, 3);
-            }
-            
-            $usernamePartInPassword = false;
-            foreach ($usernameParts as $part)
-            {
-                if (false !== utf8_strpos($varInput, $part))
-                {
-                    $usernamePartInPassword = true;
-                }
-            }
-            
-            if ($usernamePartInPassword)
+            $vRet = Validator::validatePartOfUsernameInPassword($username, $varInput);
+            if (!$vRet)
             {
                 $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['usernamePartOfPassword']);
             }

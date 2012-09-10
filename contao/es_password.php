@@ -91,9 +91,9 @@ class Index extends Backend
                     $this->addErrorMessage($GLOBALS['TL_LANG']['ERR']['passwordMatch']);
             }
             // Password too short
-            elseif (utf8_strlen($pw) < $GLOBALS['TL_CONFIG']['minPasswordLength'])
+            elseif (utf8_strlen($pw) < as_tl_user::retrivePasswordMinimumLength())
             {
-                    $this->addErrorMessage(sprintf($GLOBALS['TL_LANG']['ERR']['passwordLength'], $GLOBALS['TL_CONFIG']['minPasswordLength']));
+                    $this->addErrorMessage(sprintf($GLOBALS['TL_LANG']['ERR']['passwordLength'], as_tl_user::retrivePasswordMinimumLength()));
             }
             // Password and username are the same
             elseif ($pw == $this->User->username)
@@ -104,7 +104,27 @@ class Index extends Backend
             else
             {
                 // add own checks
-                // ...
+                // check for password complexity
+                if ($GLOBALS['TL_CONFIG']['extended_security_higher_password_complexity'])
+                {
+                    $vRet = Validator::validatePasswordComplexity($varInput);
+                    if (!$vRet)
+                    {
+                        $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['higherPasswordComplexity']);
+                    }
+                }
+
+                // check for parts of username in password
+                if ($GLOBALS['TL_CONFIG']['extended_security_password_not_contain_user'])
+                {
+                    $username = $this->getPost('username');
+
+                    $vRet = Validator::validatePartOfUsernameInPassword($username, $varInput);
+                    if (!$vRet)
+                    {
+                        $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['usernamePartOfPassword']);
+                    }
+                }
 
                 list(, $strSalt) = explode(':', $this->User->password);
                 $strPassword = sha1($strSalt . $pw);
