@@ -1,1 +1,12 @@
+contao
+system
+templates
+tl_files
+plugins
+typolight
+
+/*.php
+/*.txt
+/*.md
+
 /nbproject/
