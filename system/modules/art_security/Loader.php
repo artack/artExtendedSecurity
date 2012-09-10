@@ -45,7 +45,8 @@ class Loader
             'tl_user'   => array(
                 'validator' => array(
                     'higherPasswordComplexity'  => 'Das Passwort muss aus 3 der folgenden 4 Kategorien zusammengesetzt sein: A-Z, a-z, 0-9, Sonderzeichen (z.B. !, $, #, %, ...)',
-                    'usernamePartOfPassword'    => 'Das Passwort darf keine Teile des Benutzernamens enthalten'
+                    'usernamePartOfPassword'    => 'Das Passwort darf keine Teile des Benutzernamens enthalten',
+                    'passwordAlreadyUsed'       => 'Das Password wurde früher bereits verwendet. Bitte wählen Sie ein neues Passwort.'
                 )
             )
         )

@@ -1,4 +1,4 @@
-artSecurity
+artExtendedSecurity
 ===========
 
 Extended security module for contao

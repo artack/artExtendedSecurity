@@ -91,6 +91,17 @@ class ExtendedPassword extends Password
             }
         }
         
+        // check if the password has already been used
+        if ($GLOBALS['TL_CONFIG']['extended_security_password_history_deep'])
+        {
+            $validator = new Validator();
+            $vRet = $validator->validatePasswordHistory($this->Input->get('id'), $varInput);
+            if (!$vRet)
+            {
+                $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['passwordAlreadyUsed']);
+            }
+        }
+        
         $return = parent::validator($varInput);
         return $return;
     }

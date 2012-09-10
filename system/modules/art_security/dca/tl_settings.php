@@ -32,7 +32,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace('{files_legend', '{extended_security_legend:},extended_security_minimum_password_length,extended_security_maximum_password_age,extended_security_higher_password_complexity,extended_security_password_not_contain_user;{files_legend', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace('{files_legend', '{extended_security_legend:},extended_security_minimum_password_length,extended_security_maximum_password_age,extended_security_higher_password_complexity,extended_security_password_not_contain_user,extended_security_password_history_deep;{files_legend', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
 
 /**
  * Fields
@@ -46,7 +46,8 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['extended_security_minimum_password_
     'inputType'	=> 'text',
     'eval'		=> array(
         'mandatory' => true,
-        'tl_class'  => 'w50'
+        'tl_class'  => 'w50',
+        'rgxp'      => 'digit'
     )
 );
 
@@ -58,7 +59,8 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['extended_security_maximum_password_
     'inputType'	=> 'text',
     'default'	=> 90,
     'eval'      => array(
-        'tl_class'  => 'w50'
+        'tl_class'  => 'w50',
+        'rgxp'      => 'digit'
     )
 );
 
@@ -83,5 +85,18 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['extended_security_higher_password_c
     'default'	=> true,
     'eval'      => array(
         'tl_class'  => 'w50'
+    )
+);
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['extended_security_password_history_deep'] = array
+(
+    'label'     => &$GLOBALS['TL_LANG']['tl_settings']['extended_security_password_history_deep'],
+    'exclude'	=> true,
+    'search'    => false,
+    'inputType'	=> 'text',
+    'default'	=> 5,
+    'eval'      => array(
+        'tl_class'  => 'w50',
+        'rgxp'      => 'digit'
     )
 );

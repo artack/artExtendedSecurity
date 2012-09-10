@@ -36,9 +36,17 @@
  * @author     Patrick Landolt <http://www.artack.ch>
  * @package    art_security
  */
-class Validator
+class Validator extends Backend
 {
-
+    
+    /**
+     * Load the database object
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+    
     public static function validatePasswordComplexity($varInput)
     {
         $nonAlphaNum = '!#$%&()*+,-.:;>=<?@[]_{}';
@@ -77,6 +85,27 @@ class Validator
     public static function validateMinPasswordLength($varInput)
     {
         return (utf8_strlen($varInput) >= Loader::loadMinPasswordLength()) ? true : false;
+    }
+    
+    public function validatePasswordHistory($id, $varInput)
+    {
+        $this->import('Database');
+        
+        $passwordNotYetUsed = true;
+        
+        $objPwHistory = $this->Database->prepare("SELECT * FROM tl_pw_history WHERE pid = ?")->execute($id);
+        while($objPwHistory->next())
+        {
+            list($oldSha, $salt) = explode(":", $objPwHistory->password);
+            $newSha = sha1($salt . $varInput);
+            
+            if ($oldSha == $newSha)
+            {
+                $passwordNotYetUsed = false;
+            }
+        }
+        
+        return $passwordNotYetUsed;
     }
         
 }

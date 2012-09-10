@@ -40,3 +40,4 @@ $GLOBALS['TL_LANG']['tl_settings']['extended_security_minimum_password_length'] 
 $GLOBALS['TL_LANG']['tl_settings']['extended_security_maximum_password_age']        = array('Passwort maximalalter', 'Definieren Sie hier das maximal zuläsige Alter eines Passwortes.');
 $GLOBALS['TL_LANG']['tl_settings']['extended_security_password_not_contain_user']   = array('Keine Teile des Benutzernamens im Passwort', 'Definieren Sie hier ob das Passwort Teile des Benutzernamens enthalten darf.');
 $GLOBALS['TL_LANG']['tl_settings']['extended_security_higher_password_complexity']  = array('Erhöhte Passwortkomplexität', 'Definieren Sie hier ob das Passwort eine erhöhte Komplexität aufweisen muss.');
+$GLOBALS['TL_LANG']['tl_settings']['extended_security_password_history_deep']       = array('Passwort Vergangenheit', 'Definieren Sie hier wie viele Passwörter gespeichert bleiben um zu verhindern, dass jemand ein vergangenes Passwort wieder verwendet..');

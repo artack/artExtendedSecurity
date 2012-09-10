@@ -32,6 +32,8 @@
 /**
  * Table tl_user
  */
+$GLOBALS['TL_DCA']['tl_user']['config']['onsubmit_callback'][] = array('es_tl_user', 'storePasswordHistory');
+
 $GLOBALS['TL_DCA']['tl_user']['fields']['password'] = array(
     'label'     => &$GLOBALS['TL_LANG']['MSC']['password'],
     'exclude'   => true,
@@ -43,14 +45,14 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['password'] = array(
 );
 
 /**
- * Class tl_user
+ * Class es_tl_user
  *
  * Provide miscellaneous methods that are used by the data configuration array.
  * @copyright  ARTACK WebLab GmbH 2012
  * @author     Patrick Landolt <http://www.artack.ch>
  * @package    art_security
  */
-class as_tl_user extends Backend
+class es_tl_user extends Backend
 {
 
     /**
@@ -58,8 +60,23 @@ class as_tl_user extends Backend
      */
     public function __construct()
     {
-            parent::__construct();
-            $this->import('BackendUser', 'User');
+        parent::__construct();
+        $this->import('BackendUser', 'User');
+    }
+    
+    /**
+     * store password history (just 5)
+     * @param DataContainer $dc
+     */
+    public function storePasswordHistory(DataContainer $dc)
+    {
+        $ar = $dc->activeRecord;
+        
+        $this->Database->prepare("INSERT INTO tl_pw_history SET tstamp = ?, pid = ?, password = ?")->execute(time(), $ar->id, $ar->password);
+        
+        $this->Database->prepare("DELETE FROM tl_pw_history WHERE pid = ? AND id NOT IN (
+            SELECT id FROM ( SELECT id FROM tl_pw_history WHERE pid = ? ORDER BY id DESC LIMIT 5) foo
+        )")->execute($ar->id, $ar->id);
     }
     
 }
