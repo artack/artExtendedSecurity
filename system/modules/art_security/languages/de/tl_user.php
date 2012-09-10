@@ -29,7 +29,6 @@
  */
 
 /**
- * Regexp
+ * Translations
  */
-$GLOBALS['TL_LANG']['tl_user']['validator']['higherPasswordComplexity'] = 'Das Passwort muss aus 3 der folgenden 4 Kategorien zusammengesetzt sein: A-Z, a-z, 0-9, Sonderzeichen (z.B. !, $, #, %, ...)';
-$GLOBALS['TL_LANG']['tl_user']['validator']['usernamePartOfPassword']   = 'Das Passwort darf keine Teile des Benutzernamens enthalten';
+$GLOBALS['TL_LANG'] = array_merge_recursive($GLOBALS['TL_LANG'], Loader::loadTranslations("de"));

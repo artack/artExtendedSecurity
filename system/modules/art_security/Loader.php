@@ -38,10 +38,32 @@
  */
 class Loader
 {
-
+    
+    private static $supportedLanguages = array("de");
+    private static $LANG = array(
+        'de'    => array(
+            'tl_user'   => array(
+                'validator' => array(
+                    'higherPasswordComplexity'  => 'Das Passwort muss aus 3 der folgenden 4 Kategorien zusammengesetzt sein: A-Z, a-z, 0-9, Sonderzeichen (z.B. !, $, #, %, ...)',
+                    'usernamePartOfPassword'    => 'Das Passwort darf keine Teile des Benutzernamens enthalten'
+                )
+            )
+        )
+    );
+            
     public static function loadMinPasswordLength()
     {
         return (isset($GLOBALS['TL_CONFIG']['extended_security_minimum_password_length'])) ? $GLOBALS['TL_CONFIG']['extended_security_minimum_password_length'] : 10;
+    }
+    
+    public static function loadTranslations($language)
+    {
+        if (!in_array($language, self::$supportedLanguages))
+        {
+            throw new Exception("Languages not supported");
+        }
+        
+        return self::$LANG[$language];
     }
         
 }

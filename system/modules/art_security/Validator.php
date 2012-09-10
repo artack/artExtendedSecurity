@@ -76,7 +76,7 @@ class Validator
     
     public static function validateMinPasswordLength($varInput)
     {
-        return (utf8_strlen($varInput) > $GLOBALS['TL_CONFIG']['extended_security_minimum_password_length']) ? true : false;
+        return (utf8_strlen($varInput) >= Loader::loadMinPasswordLength()) ? true : false;
     }
         
 }

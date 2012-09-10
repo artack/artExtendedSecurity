@@ -33,7 +33,7 @@
  * Initialize the system
  */
 define('TL_MODE', 'BE');
-require_once('../system/initialize.php');
+require_once('../../system/initialize.php');
 
 
 /**
@@ -74,6 +74,7 @@ class Index extends Backend
     public function run()
     {
         $this->Template = new BackendTemplate('be_password_es');
+        $GLOBALS['TL_LANG'] = array_merge($GLOBALS['TL_LANG'], Loader::loadTranslations($GLOBALS['TL_LANGUAGE']));
 
         if ($this->Input->post('FORM_SUBMIT') == 'tl_password')
         {
@@ -91,9 +92,9 @@ class Index extends Backend
                     $this->addErrorMessage($GLOBALS['TL_LANG']['ERR']['passwordMatch']);
             }
             // Password too short
-            elseif (utf8_strlen($pw) < as_tl_user::retrivePasswordMinimumLength())
+            elseif (utf8_strlen($pw) < Loader::loadMinPasswordLength())
             {
-                    $this->addErrorMessage(sprintf($GLOBALS['TL_LANG']['ERR']['passwordLength'], as_tl_user::retrivePasswordMinimumLength()));
+                    $this->addErrorMessage(sprintf($GLOBALS['TL_LANG']['ERR']['passwordLength'], Loader::loadMinPasswordLength()));
             }
             // Password and username are the same
             elseif ($pw == $this->User->username)
@@ -104,46 +105,53 @@ class Index extends Backend
             else
             {
                 // add own checks
+                $gotOwnError = false;
+                
                 // check for password complexity
                 if ($GLOBALS['TL_CONFIG']['extended_security_higher_password_complexity'])
                 {
-                    $vRet = Validator::validatePasswordComplexity($varInput);
+                    $vRet = Validator::validatePasswordComplexity($pw);
                     if (!$vRet)
                     {
-                        $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['higherPasswordComplexity']);
+                        $this->addErrorMessage($GLOBALS['TL_LANG']['tl_user']['validator']['higherPasswordComplexity']);
+                        $gotOwnError = true;
                     }
                 }
 
                 // check for parts of username in password
                 if ($GLOBALS['TL_CONFIG']['extended_security_password_not_contain_user'])
                 {
-                    $username = $this->getPost('username');
-
-                    $vRet = Validator::validatePartOfUsernameInPassword($username, $varInput);
+                    $vRet = Validator::validatePartOfUsernameInPassword($this->User->username, $pw);
                     if (!$vRet)
                     {
-                        $this->addError($GLOBALS['TL_LANG']['tl_user']['validator']['usernamePartOfPassword']);
+                        $this->addErrorMessage($GLOBALS['TL_LANG']['tl_user']['validator']['usernamePartOfPassword']);
+                        $gotOwnError = true;
                     }
                 }
-
-                list(, $strSalt) = explode(':', $this->User->password);
-                $strPassword = sha1($strSalt . $pw);
-
-                // Make sure the password has been changed
-                if ($strPassword . ':' . $strSalt == $this->User->password)
+                
+                if (!$gotOwnError)
                 {
-                    $this->addErrorMessage($GLOBALS['TL_LANG']['MSC']['pw_change']);
-                }
-                else
-                {
-                    $strSalt = substr(md5(uniqid(mt_rand(), true)), 0, 23);
+
+                    list(, $strSalt) = explode(':', $this->User->password);
                     $strPassword = sha1($strSalt . $pw);
 
-                    $this->Database->prepare("UPDATE tl_user SET password=?, pwChange='' WHERE id=?")
-                                               ->execute($strPassword . ':' . $strSalt, $this->User->id);
+                    // Make sure the password has been changed
+                    if ($strPassword . ':' . $strSalt == $this->User->password)
+                    {
+                        $this->addErrorMessage($GLOBALS['TL_LANG']['MSC']['pw_change']);
+                    }
+                    else
+                    {
+                        $strSalt = substr(md5(uniqid(mt_rand(), true)), 0, 23);
+                        $strPassword = sha1($strSalt . $pw);
 
-                    $this->addConfirmationMessage($GLOBALS['TL_LANG']['MSC']['pw_changed']);
-                    $this->redirect('contao/main.php');
+                        $this->Database->prepare("UPDATE tl_user SET password=?, pwChange='', pwChangeTstamp = ? WHERE id=?")
+                                                   ->execute($strPassword . ':' . $strSalt, time(), $this->User->id);
+
+                        $this->addConfirmationMessage($GLOBALS['TL_LANG']['MSC']['pw_changed']);
+                        $this->redirect('contao/main.php');
+                    }
+                    
                 }
             }
 

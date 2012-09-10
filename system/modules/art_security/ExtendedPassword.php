@@ -60,12 +60,12 @@ class ExtendedPassword extends Password
         }
 
         // check for minimum password length
-        if (as_tl_user::retrivePasswordMinimumLength() > 0)
+        if (Loader::loadMinPasswordLength() > 0)
         {
             $vRet = Validator::validateMinPasswordLength($varInput);
             if (!$vRet)
             {
-                $this->addErrorMessage(sprintf($GLOBALS['TL_LANG']['ERR']['passwordLength'], as_tl_user::retrivePasswordMinimumLength()));
+                $this->addErrorMessage(sprintf($GLOBALS['TL_LANG']['ERR']['passwordLength'], Loader::loadMinPasswordLength()));
             }
         }
         

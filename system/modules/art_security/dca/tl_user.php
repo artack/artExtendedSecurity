@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['password'] = array(
     'inputType' => 'extendedPassword',
     'eval'      => array(
         'mandatory' => true,
-        'minlength' => as_tl_user::retrivePasswordMinimumLength()
+        'minlength' => Loader::loadMinPasswordLength()
     )
 );
 
@@ -62,12 +62,4 @@ class as_tl_user extends Backend
             $this->import('BackendUser', 'User');
     }
     
-    /**
-     * Retrieve extended password minimum length.
-     */
-    public static function retrivePasswordMinimumLength()
-    {
-        return ($GLOBALS['TL_CONFIG']['extended_security_minimum_password_length'] > 0) ? $GLOBALS['TL_CONFIG']['extended_security_minimum_password_length'] : 10;
-    }
-        
 }
