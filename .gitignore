@@ -1,3 +1,14 @@
-*
-!contao/art_security
-!system/modules/art_security
+/*
+
+!/contao/
+/contao/*
+!/contao/art_security/
+
+!/system/
+/system/*
+!/system/modules/
+/system/modules/*
+!/system/modules/art_security/
+
+!.gitignore
+!README.md
