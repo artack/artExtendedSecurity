@@ -1,7 +1,5 @@
 > **ATTENTION:** This repository is archived and therefore readonly.
 
----
-
 artExtendedSecurity
 ===================
 
